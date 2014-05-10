@@ -1,0 +1,5 @@
+# pesky swap
+*.swp
+*.~
+# pesky python
+*.pyc
