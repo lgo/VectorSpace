@@ -43,22 +43,23 @@ class Player(sprite.Sprite):
                 self.vely = 0
 
 
-    def spawn_particles(self):
-        Particles(self.rect.x, self.rect.y)
-
     def update(self):
         
         # take keyboard input
         keys = key.get_pressed()
+        engines_on = False
         if keys[K_s]:
             self.vely += Player.speed     
+            engines_on = True
         if keys[K_w]:
             self.vely -= Player.speed
-            self.spawn_particles()
+            engines_on = True
         if keys[K_d]:
             self.velx += Player.speed
+            engines_on = True
         if keys[K_a]:
             self.velx -= Player.speed
+            engines_on = True
 
         if keys[K_m]:
             self.velx = 0
@@ -69,6 +70,7 @@ class Player(sprite.Sprite):
 
         self.rect.x += self.velx
         self.rect.y += self.vely
-
+        if (self.velx != 0 or self.vely != 0):
+            Particles(self.rect.x, self.rect.y, engines_on)
         self.apply_drag()
         
