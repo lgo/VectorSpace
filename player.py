@@ -1,8 +1,11 @@
+import os
 from pygame import *
 from particles import Particles
 
 class Player(sprite.Sprite):
-    
+   
+    basic_graphics = True
+
     height = 10
     width = 10
 
@@ -16,9 +19,13 @@ class Player(sprite.Sprite):
         self.velx = 0
         self.vely = 0
         self.rect = Rect(self.x, self.y, Player.width, Player.height)
-        self.image = Surface( (Player.width, Player.height) )
-        self.image.fill( Color("Grey") )
-        self.image.convert()
+        if Player.basic_graphics:
+            self.image = Surface( (Player.width, Player.height) )
+            self.image.fill( Color("Grey") )
+            self.image.convert()
+        else:
+            self.image = image.load(os.path.join('spaceship.png'))
+            self.image.convert()
         
     def apply_drag(self):
         self.velx *= Player.drag
@@ -47,19 +54,19 @@ class Player(sprite.Sprite):
         
         # take keyboard input
         keys = key.get_pressed()
-        engines_on = False
+        engine_state = False
         if keys[K_s]:
             self.vely += Player.speed     
-            engines_on = True
+            engine_state = True
         if keys[K_w]:
             self.vely -= Player.speed
-            engines_on = True
+            engine_state = True
         if keys[K_d]:
             self.velx += Player.speed
-            engines_on = True
+            engine_state = True
         if keys[K_a]:
             self.velx -= Player.speed
-            engines_on = True
+            engine_state = True
 
         if keys[K_m]:
             self.velx = 0
@@ -71,6 +78,9 @@ class Player(sprite.Sprite):
         self.rect.x += self.velx
         self.rect.y += self.vely
         if (self.velx != 0 or self.vely != 0):
-            Particles(self.rect.x, self.rect.y, engines_on)
+            if Player.basic_graphics:
+                Particles(self.rect.x, self.rect.y, engine_state)
+            else:
+                Particles(self.rect.x + 40, self.rect.y + 60, engine_state)
         self.apply_drag()
         
