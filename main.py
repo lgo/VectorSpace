@@ -19,7 +19,9 @@ class Game:
     # exit sequence
     def quit(self):
         sys.exit()
-
+    
+    def draw_fps(self, screen):
+        pass
     # game loop
     def run(self):
         player = Player()
@@ -33,6 +35,7 @@ class Game:
             
             event_handler(Shared.groups)
             
+            self.draw_fps(self.screen)
             render(self.screen, Shared.groups, self.camera)
 
     # game entry point
@@ -52,6 +55,7 @@ class Game:
         Shared.groups['particles'] = pygame.sprite.Group()
 
         self.camera = { 'x':0, 'y':0}
+        self.clock = time.Clock()
         self.run()
 
 # program entry point
